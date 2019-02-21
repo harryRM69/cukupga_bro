@@ -26,6 +26,8 @@ class Home extends Component {
     super(props);
     var date = new Date();
     var Month = date.getMonth() + 1;
+    var day = date.getDate()
+
     if (Month == 1) {
       Month2 = "Jan";
     } else if (Month == 2) {
@@ -53,6 +55,7 @@ class Home extends Component {
     }
     this.state = {
       todoLists: [],
+      selectedDay : day,
       selectedMonth: Month,
       selectedMonth2: Month2,
       selectedMonthDebit: Month,
@@ -139,6 +142,42 @@ class Home extends Component {
 
     //Total Dana
     total_dana = total_pendapatan - total_pengeluaran;
+
+     //  Pengeluaran hari ini
+   
+ // Pengeluaran Reguler
+   const dataPengeluaranRegulerToday = this.state.todoLists.filter(
+    item =>
+      item.selectedBtnTypeDebit === "reguler" &&
+      item.selectedMonth2Debit === this.state.selectedMonthDebit &&
+      item.creationDateDebit.getDate() === this.state.selectedDay
+  );
+ 
+  let total_pengeluaran_regulerToday = 0;
+  dataPengeluaranRegulerToday.map(item => {
+    const nominalPengeluaranRegulerToday = parseInt(item.amountDebit);
+    total_pengeluaran_regulerToday += nominalPengeluaranRegulerToday;
+  });
+
+
+// Pengeluaran Lainnya
+
+const dataPengeluaranLainnyaToday = this.state.todoLists.filter(
+  item =>
+    item.selectedBtnTypeDebit === "lainnya" &&
+    item.selectedMonth2Debit === this.state.selectedMonthDebit &&
+    item.creationDateDebit.getDate() === this.state.selectedDay
+);
+let total_pengeluaran_lainnyaToday = 0;
+dataPengeluaranLainnyaToday.map(item => {
+  const nominalPengeluaranLainnyaToday = parseInt(item.amountDebit);
+  total_pengeluaran_lainnyaToday += nominalPengeluaranLainnyaToday;
+});
+
+const total_pengeluaranToday =
+  total_pengeluaran_regulerToday + total_pengeluaran_lainnyaToday;
+
+
 
     return (
       // Pendapatan
@@ -481,7 +520,9 @@ class Home extends Component {
                                 textAlign: "center"
                               }}
                             >
-                              / 60,000
+                              /  {numeral(total_pengeluaranToday).format(
+                            "0,0"
+                          )}
                             </Text>
                           </View>
                         </Swipeout>
@@ -533,12 +574,12 @@ class Home extends Component {
             <TouchableOpacity style={{}}>
               <Image
                 style={{
-                  height: 64,
-                  width: 64,
+                  height: 76,
+                  width: 76,
                   marginTop: "1%",
                   justifyContent: "center"
                 }}
-                source={require("../asset_app/Logout.png")}
+                source={require("../asset_app/Datasetting.png")}
                 resizeMode="contain"
               />
             </TouchableOpacity>
@@ -576,7 +617,7 @@ class Home extends Component {
             <View style={{ marginRight: "4%" }}>
               <Text style={{ color: "#ffffff", fontWeight: "bold" }}>
                 {" "}
-                Logout{" "}
+                Setting{" "}
               </Text>
             </View>
           </View>

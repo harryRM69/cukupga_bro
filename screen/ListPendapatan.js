@@ -8,7 +8,8 @@ import {
   ScrollView,
   Modal,
   Image,
-  Alert
+  Alert,
+  ImageBackground
 } from "react-native";
 import numeral from "numeral";
 import { withNavigation } from "react-navigation";
@@ -816,8 +817,6 @@ export default class ListPendapatan extends Component {
             </View>
 
             <View style={{ backgroundColor: "transparent" }} />
-
-            
 
             {/* Modal Delete All*/}
             <Modal

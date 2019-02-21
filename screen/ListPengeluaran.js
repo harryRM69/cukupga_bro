@@ -727,7 +727,7 @@ const total_pengeluaranToday =
                   >
                     <View
                       style={{
-                        backgroundColor: "#00000080",
+                        backgroundColor: "#00000095",
                         width: "90%",
                         height: "70%",
                         marginTop: "2%",
