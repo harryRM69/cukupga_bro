@@ -33,6 +33,7 @@ export default class ListPengeluaran extends Component {
   constructor(props) {
     var date = new Date();
     var Month = date.getMonth() + 1;
+    var day = date.getDate()
 
     if (Month == 1) {
       Month2 = "Jan";
@@ -64,6 +65,7 @@ export default class ListPengeluaran extends Component {
     this.state = {
       todoLists: [],
       MonthDebit: Month,
+      selectedDay : day,
       selectedMonthDebit: Month,
       selectedMonth2Debit: Month2,
       modalVisible: false,
@@ -121,7 +123,7 @@ export default class ListPengeluaran extends Component {
     const date = item_pengeluaran.item.creationDate.getDate();
     const year = item_pengeluaran.item.creationDate.getYear() - 100;
     const id = item_pengeluaran.item.id;
-    console.log(item_pengeluaran);
+    
 
     showDeleteConfirmationReguler = () => {
       Alert.alert(
@@ -525,7 +527,42 @@ export default class ListPengeluaran extends Component {
     const total_pengeluaran_lainnya_BajuTas_pie = total_pengeluaran_lainnya_BajuTas;
     const total_pengeluaran_lainnya_Lainnya_pie =
       total_pengeluaran_lainnya_Lainnya + 1;
-    console.log(total_pengeluaran_lainnya_Lainnya_pie);
+    
+    //  Pengeluaran hari ini
+   
+ // Pengeluaran Reguler
+   const dataPengeluaranRegulerToday = this.state.todoLists.filter(
+    item =>
+      item.selectedBtnTypeDebit === "reguler" &&
+      item.selectedMonth2Debit === this.state.selectedMonthDebit &&
+      item.creationDateDebit.getDate() === this.state.selectedDay
+  );
+ 
+  let total_pengeluaran_regulerToday = 0;
+  dataPengeluaranRegulerToday.map(item => {
+    const nominalPengeluaranRegulerToday = parseInt(item.amountDebit);
+    total_pengeluaran_regulerToday += nominalPengeluaranRegulerToday;
+  });
+
+
+// Pengeluaran Lainnya
+
+const dataPengeluaranLainnyaToday = this.state.todoLists.filter(
+  item =>
+    item.selectedBtnTypeDebit === "lainnya" &&
+    item.selectedMonth2Debit === this.state.selectedMonthDebit &&
+    item.creationDateDebit.getDate() === this.state.selectedDay
+);
+let total_pengeluaran_lainnyaToday = 0;
+dataPengeluaranLainnyaToday.map(item => {
+  const nominalPengeluaranLainnyaToday = parseInt(item.amountDebit);
+  total_pengeluaran_lainnyaToday += nominalPengeluaranLainnyaToday;
+});
+
+const total_pengeluaranToday =
+  total_pengeluaran_regulerToday + total_pengeluaran_lainnyaToday;
+
+
     return (
       <Container>
         {/* Modal FrontPage Pengeluaran */}
@@ -575,11 +612,10 @@ export default class ListPengeluaran extends Component {
                 </TouchableOpacity>
 
                 <ImageBackground
-                  source={require("../asset_app/manbrainblur.png")}
+                  source={require("../asset_app/modalkeluar2.png")}
                   style={{
                     flex: 1,
-                    // resizeMode: "stretch",
-                    width: "100%",
+                    width: "93%",
                     height: "100%"
                   }}
                 >
@@ -600,7 +636,7 @@ export default class ListPengeluaran extends Component {
                   <View
                     style={{
                       flex: 0.9,
-                      backgroundColor: "#FFFFFF50",
+                      backgroundColor: "transparent",
                       width: "100%",
                       height: "100%",
                       flexDirection: "row"
@@ -657,7 +693,7 @@ export default class ListPengeluaran extends Component {
                           marginTop: "3%",
                           fontWeight: "700",
                           textAlign: "center",
-                          backgroundColor: "#FFFFFF70",
+                          backgroundColor: "transparent",
                           borderTopRightRadius: 10,
                           borderTopLeftRadius: 10
                         }}
@@ -1067,7 +1103,7 @@ export default class ListPengeluaran extends Component {
 
                     <View
                       style={{
-                        backgroundColor: "#00000080",
+                        backgroundColor: "#24E2FF",
                         width: "90%",
                         height: "20%",
                         marginTop: "2%",
@@ -1084,7 +1120,7 @@ export default class ListPengeluaran extends Component {
                           fontFamily: "roboto",
                           fontSize: 16,
                           fontWeight: "500",
-                          color: "#FFFFFF",
+                          color: "#000000",
                           marginTop: "1%",
                           marginBottom: "1%"
                         }}
@@ -1096,13 +1132,15 @@ export default class ListPengeluaran extends Component {
                           fontFamily: "roboto",
                           fontSize: 25,
                           fontWeight: "500",
-                          color: "#FFFFFF",
+                          color: "#000000",
                           marginTop: "1%",
                           marginBottom: "1%",
                           marginLeft: "1%"
                         }}
                       >
-                        Rp. 200,000
+                        Rp.  {numeral(total_pengeluaranToday).format(
+                            "0,0"
+                          )}
                       </Text>
                     </View>
                   </View>
