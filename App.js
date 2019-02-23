@@ -22,6 +22,7 @@ import Setting from "./screen/Setting"
 import HeaderPendapatan from "./Components/HeaderComponent/index";
 import HeaderPengeluaran from "./Components/HeaderComponent/indexpengeluaran";
 import indexProps from "./Components/HeaderComponent/indexProps";
+import SplashScreen from "./Components/splash";
 
 const {width, height} = Dimensions.get ('window');
 
@@ -160,10 +161,18 @@ const RouteStack = StackNavigator(
         header: null,
       }
     },
+    SplashPage: {
+      screen: SplashScreen,
+      headerMode: "none",
+      header: null,
+      navigationOptions: {
+        header: null,
+      }
+    },
 
   },
   {
-    initialRouteName: "HomePage",
+    initialRouteName: "SplashPage",
     transitionConfig:transconfig 
   }
 );

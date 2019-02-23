@@ -89,7 +89,7 @@ class Home extends Component {
         this.setState({ loading: true });
         this.setState({ todoLists: [] });
       });
-      console.log(`reloadData`);
+    console.log(`reloadData`);
   };
 
   reloadData_Setting = () => {
@@ -102,7 +102,7 @@ class Home extends Component {
         this.setState({ loading: true });
         this.setState({ todoLists_Setting: [] });
       });
-      console.log(`reloadData_Setting`);
+    console.log(`reloadData_Setting`);
   };
 
   setModalVisible(visible) {
@@ -179,6 +179,40 @@ class Home extends Component {
       total_pengeluaran_regulerToday += nominalPengeluaranRegulerToday;
     });
 
+    // Pengeluaran Meal
+    const dataPengeluaranRegulerMealToday = this.state.todoLists.filter(
+      item =>
+        item.selectedBtnTypeDebit === "reguler" &&
+        item.selectBtnLabelTetapDebit === "Makan & Minum" &&
+        item.selectedMonth2Debit === this.state.selectedMonthDebit &&
+        item.creationDateDebit.getDate() === this.state.selectedDay
+    );
+
+    let total_pengeluaran_reguler_Meal_Today = 0;
+    dataPengeluaranRegulerMealToday.map(item => {
+      const nominalPengeluaranRegulerMealToday = parseInt(item.amountDebit);
+      total_pengeluaran_reguler_Meal_Today += nominalPengeluaranRegulerMealToday;
+    });
+    console.log(total_pengeluaran_reguler_Meal_Today);
+
+    // Pengeluaran Transport
+    const dataPengeluaranRegulerTransportToday = this.state.todoLists.filter(
+      item =>
+        item.selectedBtnTypeDebit === "reguler" &&
+        item.selectBtnLabelTetapDebit === "Transport" &&
+        item.selectedMonth2Debit === this.state.selectedMonthDebit &&
+        item.creationDateDebit.getDate() === this.state.selectedDay
+    );
+
+    let total_pengeluaran_reguler_Transport_Today = 0;
+    dataPengeluaranRegulerTransportToday.map(item => {
+      const nominalPengeluaranRegulerTransportToday = parseInt(
+        item.amountDebit
+      );
+      total_pengeluaran_reguler_Transport_Today += nominalPengeluaranRegulerTransportToday;
+    });
+    console.log(total_pengeluaran_reguler_Transport_Today);
+
     // Pengeluaran Lainnya
 
     const dataPengeluaranLainnyaToday = this.state.todoLists.filter(
@@ -193,45 +227,78 @@ class Home extends Component {
       total_pengeluaran_lainnyaToday += nominalPengeluaranLainnyaToday;
     });
 
+    // Pengeluaran Lainnya
+    const dataPengeluaranLainnyaLainnyaToday = this.state.todoLists.filter(
+      item =>
+        item.selectedBtnTypeDebit === "lainnya" &&
+        item.selectBtnLabelLainnyaDebit === "Lainnya" &&
+        item.selectedMonth2Debit === this.state.selectedMonthDebit &&
+        item.creationDateDebit.getDate() === this.state.selectedDay
+    );
+
+    let total_pengeluaran_lainnya_Lainnya_Today = 0;
+    dataPengeluaranLainnyaLainnyaToday.map(item => {
+      const nominalPengeluaranLainnyaLainnyaToday = parseInt(item.amountDebit);
+      total_pengeluaran_lainnya_Lainnya_Today += nominalPengeluaranLainnyaLainnyaToday;
+    });
+    console.log(total_pengeluaran_lainnya_Lainnya_Today);
+
     const total_pengeluaranToday =
       total_pengeluaran_regulerToday + total_pengeluaran_lainnyaToday;
 
+    const total_pengeluaran_survive =
+      total_pengeluaran_reguler_Meal_Today +
+      total_pengeluaran_reguler_Transport_Today +
+      total_pengeluaran_lainnya_Lainnya_Today;
+    console.log(total_pengeluaran_survive);
+
     // MyBroSetting
-    const DataSeorangKaryawan = this.state.todoLists_Setting.filter (
-      item => 
-      item.selectBtnSettingSeorang === "Karyawan"
+    const DataSeorangKaryawan = this.state.todoLists_Setting.filter(
+      item => item.selectBtnSettingSeorang === "Karyawan"
     );
-    console.log(DataSeorangKaryawan)
+    console.log(DataSeorangKaryawan);
 
     const dataAngsuranSetting = this.state.todoLists_Setting.filter(
-      item =>
-      item.selectBtnSettingSeorang === "Karyawan" 
+      item => item.selectBtnSettingSeorang === "Karyawan"
     );
     let total_angsuran_Setting = 0;
     dataAngsuranSetting.map(item => {
       const nominalAngsuranSetting = parseInt(item.amountSetting);
       total_angsuran_Setting += nominalAngsuranSetting;
     });
-    console.log (total_angsuran_Setting)
+    console.log(total_angsuran_Setting);
 
-    const TenPersen = total_dana * 0.05
-    console.log (TenPersen)
+    const TenPersen = total_pendapatan * 0.05;
+    console.log(TenPersen);
 
-    const ReserveSetting = total_dana * 0.2
-    console.log (ReserveSetting)
+    const ReserveSetting = total_pendapatan * 0.2;
+    console.log(ReserveSetting);
 
-    const MybroEstimate = total_dana - total_angsuran_Setting - TenPersen - ReserveSetting
-    console.log (MybroEstimate)
+    const MybroEstimate =
+      total_pendapatan - total_angsuran_Setting - TenPersen - ReserveSetting;
+    console.log(MybroEstimate);
 
-    const MybroEstimateFinal = MybroEstimate / 30
-    console.log (MybroEstimateFinal)
+    const dayMybro = 30 - this.state.selectedDay;
+    console.log(dayMybro);
 
-    const MealPerday = MybroEstimateFinal * 0.6
-    const TransportPerday = MybroEstimateFinal * 0.2
-    const ReservePerday = MybroEstimateFinal *0.2
+    const MybroEstimateFinal = MybroEstimate / dayMybro;
+    console.log(MybroEstimateFinal);
 
+    const MyBroReal = total_dana / dayMybro;
+    console.log(MyBroReal);
 
+    let MybroFinal2 = 0;
+    if (MyBroReal < MybroEstimate) {
+      MybroFinal2 = MyBroReal;
+    } else {
+      MybroFinal2 = MybroEstimate;
+    }
 
+    console.log(MybroFinal2);
+
+    const MealPerday = MybroFinal2 * 0.6;
+    const TransportPerday = MybroFinal2 * 0.2;
+    const ReservePerday = MybroFinal2 * 0.2;
     return (
       // Pendapatan
 
@@ -575,7 +642,7 @@ class Home extends Component {
                                 textAlign: "center"
                               }}
                             >
-                              {numeral(MybroEstimateFinal).format("0,0")}
+                              {numeral(MybroFinal2).format("0,0")}
                             </Text>
                             <Text
                               style={{
@@ -589,7 +656,8 @@ class Home extends Component {
                                 textAlign: "center"
                               }}
                             >
-                              / {numeral(total_pengeluaranToday).format("0,0")}
+                              /{" "}
+                              {numeral(total_pengeluaran_survive).format("0,0")}
                             </Text>
                           </View>
                         </Swipeout>
