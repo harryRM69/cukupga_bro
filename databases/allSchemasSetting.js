@@ -23,23 +23,23 @@ export const TodoListSchema_Setting = {
     }
 };
 const databaseOptions_Setting = {
-    path: 'todoListApp_Setting.realm',
+    path: 'todoListApp_Setting.realm_Setting',
     schema: [TodoListSchema_Setting, TodoSchema_Setting],
     schemaVersion: 0, //optional    
 };
 //functions for TodoLists
 export const insertNewTodoList_Setting = newTodoList_Setting => new Promise((resolve, reject) => {    
-    Realm.open(databaseOptions_Setting).then(realm => {
-        realm.write(() => {
-            realm.create(TODOLIST_SCHEMA_SETTING, newTodoList_Setting);
+    Realm.open(databaseOptions_Setting).then(realm_setting => {
+        realm_setting.write(() => {
+            realm_setting.create(TODOLIST_SCHEMA_SETTING, newTodoList_Setting);
             resolve(newTodoList_Setting);
         });
     }).catch((error) => reject(error));
 });
 export const updateTodoList_Setting = todoList_Setting => new Promise((resolve, reject) => {    
-    Realm.open(databaseOptions_Setting).then(realm => {        
+    Realm.open(databaseOptions_Setting).then(realm_setting => {        
         realm.write(() => {
-            let updatingTodoList_Setting = realm.objectForPrimaryKey(TODOLIST_SCHEMA_SETTING, todoList_Setting.id);   
+            let updatingTodoList_Setting = realm_setting.objectForPrimaryKey(TODOLIST_SCHEMA_SETTING, todoList_Setting.id);   
             updatingTodoList_Setting.name = todoList_Setting.name;    
             resolve();     
         });
@@ -47,8 +47,8 @@ export const updateTodoList_Setting = todoList_Setting => new Promise((resolve, 
 });
 
 export const queryAllTodoLists_Setting = () => new Promise((resolve, reject) => {    
-    Realm.open(databaseOptions_Setting).then(realm => {        
-        let allTodoLists_Setting = realm.objects(TODOLIST_SCHEMA_SETTING);
+    Realm.open(databaseOptions_Setting).then(realm_setting => {        
+        let allTodoLists_Setting = realm_setting.objects(TODOLIST_SCHEMA_SETTING);
         resolve(allTodoLists_Setting);  
     }).catch((error) => {        
         reject(error);  

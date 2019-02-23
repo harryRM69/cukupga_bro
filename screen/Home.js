@@ -19,6 +19,8 @@ import fromBottomUp from "../App";
 import IndexProps from "../Components/HeaderComponent/indexProps";
 import realm from "../databases/allSchemas";
 import { queryAllTodoLists } from "../databases/allSchemas";
+import realm_setting from "../databases/allSchemasSetting";
+import { queryAllTodoLists_Setting } from "../databases/allSchemasSetting";
 import Swipeout from "react-native-swipeout";
 
 console.disableYellowBox = true;
@@ -56,6 +58,7 @@ class Home extends Component {
     }
     this.state = {
       todoLists: [],
+      todoLists_Setting: [],
       selectedDay: day,
       selectedMonth: Month,
       selectedMonth2: Month2,
@@ -70,6 +73,11 @@ class Home extends Component {
     realm.addListener("change", () => {
       this.reloadData();
     });
+
+    this.reloadData_Setting();
+    realm_setting.addListener("change", () => {
+      this.reloadData();
+    });
   }
   reloadData = () => {
     queryAllTodoLists()
@@ -81,8 +89,20 @@ class Home extends Component {
         this.setState({ loading: true });
         this.setState({ todoLists: [] });
       });
+      console.log(`reloadData`);
+  };
 
-    console.log(`reloadData`);
+  reloadData_Setting = () => {
+    queryAllTodoLists_Setting()
+      .then(todoLists_Setting => {
+        this.setState({ todoLists_Setting });
+      })
+
+      .catch(error => {
+        this.setState({ loading: true });
+        this.setState({ todoLists_Setting: [] });
+      });
+      console.log(`reloadData_Setting`);
   };
 
   setModalVisible(visible) {
@@ -176,6 +196,42 @@ class Home extends Component {
     const total_pengeluaranToday =
       total_pengeluaran_regulerToday + total_pengeluaran_lainnyaToday;
 
+    // MyBroSetting
+    const DataSeorangKaryawan = this.state.todoLists_Setting.filter (
+      item => 
+      item.selectBtnSettingSeorang === "Karyawan"
+    );
+    console.log(DataSeorangKaryawan)
+
+    const dataAngsuranSetting = this.state.todoLists_Setting.filter(
+      item =>
+      item.selectBtnSettingSeorang === "Karyawan" 
+    );
+    let total_angsuran_Setting = 0;
+    dataAngsuranSetting.map(item => {
+      const nominalAngsuranSetting = parseInt(item.amountSetting);
+      total_angsuran_Setting += nominalAngsuranSetting;
+    });
+    console.log (total_angsuran_Setting)
+
+    const TenPersen = total_dana * 0.05
+    console.log (TenPersen)
+
+    const ReserveSetting = total_dana * 0.2
+    console.log (ReserveSetting)
+
+    const MybroEstimate = total_dana - total_angsuran_Setting - TenPersen - ReserveSetting
+    console.log (MybroEstimate)
+
+    const MybroEstimateFinal = MybroEstimate / 30
+    console.log (MybroEstimateFinal)
+
+    const MealPerday = MybroEstimateFinal * 0.6
+    const TransportPerday = MybroEstimateFinal * 0.2
+    const ReservePerday = MybroEstimateFinal *0.2
+
+
+
     return (
       // Pendapatan
 
@@ -223,23 +279,8 @@ class Home extends Component {
                 Ga
               </Text>
             </View>
-            <View
-              style={{
-                marginBottom: "1%",
-                marginLeft: "2%"
-              }}
-            >
-              <Image
-                style={{
-                  height: 50,
-                  width: 128
-                }}
-                source={require("../asset_app/LogoJenius2.png")}
-                resizeMode="contain"
-              />
-            </View>
 
-            <View style={{ marginTop: "2%", marginLeft: "21%" }}>
+            <View style={{ marginTop: "2%", marginLeft: "28%" }}>
               <Text
                 style={{
                   fontSize: 20,
@@ -250,6 +291,22 @@ class Home extends Component {
               >
                 {Month2}
               </Text>
+            </View>
+
+            <View
+              style={{
+                marginBottom: "1%",
+                marginLeft: "3%"
+              }}
+            >
+              <Image
+                style={{
+                  height: 50,
+                  width: 128
+                }}
+                source={require("../asset_app/LogoJenius2.png")}
+                resizeMode="contain"
+              />
             </View>
           </View>
         </View>
@@ -395,7 +452,7 @@ class Home extends Component {
                         style={{
                           marginTop: "3%",
                           backgroundColor: "transparent",
-                          resizeMode: "contain",
+                          // resizeMode: "contain",
                           width: "100%",
                           height: "67.5%"
                         }}
@@ -438,7 +495,7 @@ class Home extends Component {
                                       fontSize: 16
                                     }}
                                   >
-                                    60,000
+                                    {numeral(MealPerday).format("0,0")}
                                   </Text>
                                 </View>
                               )
@@ -464,7 +521,7 @@ class Home extends Component {
                                       fontSize: 16
                                     }}
                                   >
-                                    40,000
+                                    {numeral(TransportPerday).format("0,0")}
                                   </Text>
                                 </View>
                               )
@@ -491,7 +548,7 @@ class Home extends Component {
                                       fontSize: 16
                                     }}
                                   >
-                                    20,000
+                                    {numeral(ReservePerday).format("0,0")}
                                   </Text>
                                 </View>
                               )
@@ -518,7 +575,7 @@ class Home extends Component {
                                 textAlign: "center"
                               }}
                             >
-                              120,000
+                              {numeral(MybroEstimateFinal).format("0,0")}
                             </Text>
                             <Text
                               style={{
