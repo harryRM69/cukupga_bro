@@ -17,7 +17,8 @@ import Home from "./screen/Home";
 import InputPendapatan from "./screen/InputPendapatan";
 import InputPengeluaran from "./screen/InputPengeluaran";
 import ListPendapatan from "./screen/ListPendapatan";
-import ListPengeluaran from "./screen/ListPengeluaran"
+import ListPengeluaran from "./screen/ListPengeluaran";
+import Setting from "./screen/Setting"
 import HeaderPendapatan from "./Components/HeaderComponent/index";
 import HeaderPengeluaran from "./Components/HeaderComponent/indexpengeluaran";
 import indexProps from "./Components/HeaderComponent/indexProps";
@@ -145,6 +146,14 @@ const RouteStack = StackNavigator(
     },
     CobaPage: {
       screen: indexProps,
+      headerMode: "none",
+      header: null,
+      navigationOptions: {
+        header: null,
+      }
+    },
+    SettingPage: {
+      screen: Setting,
       headerMode: "none",
       header: null,
       navigationOptions: {

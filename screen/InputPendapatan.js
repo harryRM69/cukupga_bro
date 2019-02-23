@@ -40,7 +40,12 @@ class InputPendapatan extends Component {
       amountFormatedDebit: "",
       selectedBtnTypeDebit: "",
       isAddNew: true,
-      selectedMonth2Debit: "0"
+      selectedMonth2Debit: "0",
+
+      selectBtnSettingSeorang: "",
+      selectBtnSettingAman: "",
+      amountSetting: "",
+
     };
   }
 
@@ -62,7 +67,9 @@ class InputPendapatan extends Component {
       selectBtnLabelLainnyaDebit,
       selectedMonth2Debit,
       amountDebit,
-      selectedBtnDebit
+
+
+  
     } = this.state;
 
     // Month;
@@ -526,7 +533,12 @@ class InputPendapatan extends Component {
                       .selectBtnLabelLainnyaDebit,
                     selectedMonth2Debit: date.getMonth() + 1,
                     amountDebit: this.state.amountDebit,
-                    creationDateDebit: new Date()
+                    creationDateDebit: new Date(),
+
+                    selectBtnSettingSeorang:this.state.selectBtnSettingSeorang,
+                    selectBtnSettingAman:this.state.selectBtnSettingAman,
+                    amountSetting:this.state.amountSetting
+                    
                   };
                   console.log(newTodoList);
                   insertNewTodoList(newTodoList)
@@ -552,7 +564,11 @@ class InputPendapatan extends Component {
                     selectBtnLabelLainnyaDebit: this.state
                       .selectBtnLabelLainnyaDebit,
                     selectedMonth2Debit: this.state.selectedMonth2Debit,
-                    amountDebit: this.state.amountDebit
+                    amountDebit: this.state.amountDebit,
+
+                    selectBtnSettingSeorang:this.state.selectBtnSettingSeorang,
+                    selectBtnSettingAman:this.state.selectBtnSettingAman,
+                    amountSetting:this.state.amountSetting
                   };
                   console.log(todoList);
                   updateTodoList(todoList)
@@ -592,35 +608,7 @@ class InputPendapatan extends Component {
                 Simpan{" "}
               </Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={() => this.setState({ selectedBtn: "cancel" })}
-              style={{
-                backgroundColor:
-                  selectedBtn === "cancel" ? "#1eb721" : "#FFFFFF",
-                width: "50%",
-                height: "30%",
-                margin: "5%",
-                borderRadius: 40,
-                borderColor: selectedBtn === "simpan" ? "#E8E8E8" : "#FFFFFF",
-                borderWidth: selectedBtn === "simpan" ? 3 : 0
-              }}
-            >
-              <Text
-                style={{
-                  color: selectedBtn === "cancel" ? "#FFFFFF" : "#E8E8E8",
-                  fontSize: 18,
-                  fontFamily: "sans-serif-medium",
-                  textAlign: "center",
-                  fontWeight: "500",
-                  backgroundColor: "transparent",
-                  height: "100%",
-                  margin: "5%"
-                }}
-              >
-                Batal
-                {""}
-              </Text>
-            </TouchableOpacity> */}
+            
           </View>
         </View>
       </Container>

@@ -37,7 +37,11 @@ class InputPengeluaran extends Component {
       amountFormated: "",
       selectedBtn: "",
       isAddNew: true,
-      selectedMonth2: ""
+      selectedMonth2: "",
+
+      selectBtnSettingSeorang: "",
+      selectBtnSettingAman: "",
+      amountSetting: "",
     };
   }
   render() {
@@ -46,7 +50,8 @@ class InputPengeluaran extends Component {
       selectBtnLabelTetapDebit,
       selectBtnLabelLainnyaDebit,
       amountDebit,
-      selectedBtnDebit
+      selectedBtnDebit,
+
     } = this.state;
 
     // Month;
@@ -645,6 +650,7 @@ class InputPengeluaran extends Component {
                   this.state.amountDebit === ""
                 ) {
                   Alert.alert("Sorry", "Masih ada yang belum dicatat..");
+
                 } else if (this.state.isAddNew == true) {
                   const newTodoList = {
                     id: Math.floor(Date.now() / 1000),
@@ -662,7 +668,12 @@ class InputPengeluaran extends Component {
                       .selectBtnLabelLainnyaDebit,
                     selectedMonth2Debit: date.getMonth() + 1,
                     amountDebit: this.state.amountDebit,
-                    creationDateDebit: new Date()
+                    creationDateDebit: new Date(),
+
+                    selectBtnSettingSeorang:this.state.selectBtnSettingSeorang,
+                    selectBtnSettingAman:this.state.selectBtnSettingAman,
+                    amountSetting:this.state.amountSetting
+                    
                   };
                   console.log(newTodoList);
                   insertNewTodoList(newTodoList)
@@ -670,9 +681,9 @@ class InputPengeluaran extends Component {
                     .catch(error => {
                       alert(`Insert new todoList error ${error}`);
                     });
-                    this.props.navigation.navigate("HomePage", {
-                      transition: "fromRightLeft"
-                    });
+                  this.props.navigation.navigate("HomePage", {
+                    transition: "fromRightLeft"
+                  });
                 } else {
                   const todoList = {
                     id: this.state.id,
@@ -688,7 +699,11 @@ class InputPengeluaran extends Component {
                     selectBtnLabelLainnyaDebit: this.state
                       .selectBtnLabelLainnyaDebit,
                     selectedMonth2Debit: this.state.selectedMonth2Debit,
-                    amountDebit: this.state.amountDebit
+                    amountDebit: this.state.amountDebit,
+
+                    selectBtnSettingSeorang:this.state.selectBtnSettingSeorang,
+                    selectBtnSettingAman:this.state.selectBtnSettingAman,
+                    amountSetting:this.state.amountSetting
                   };
                   console.log(todoList);
                   updateTodoList(todoList)
@@ -696,11 +711,11 @@ class InputPengeluaran extends Component {
                     .catch(error => {
                       alert(`Update todoList error ${error}`);
                     });
-                    this.props.navigation.navigate("HomePage", {
-                      transition: "fromRightLeft"
-                    });
+
+                  this.props.navigation.navigate("HomePage", {
+                    transition: "fromRightLeft"
+                  });
                 }
-                
               }}
               
               style={{

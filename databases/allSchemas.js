@@ -28,7 +28,7 @@ export const TodoListSchema = {
         creationDateDebit: 'date',
         selectBtnLabelTetapDebit:'string',
         selectBtnLabelLainnyaDebit:'string',
-        amountDebit:'string',
+        amountDebit:'string',       
         todos: { type: 'list', objectType: TODO_SCHEMA },
     }
 };

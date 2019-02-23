@@ -21,12 +21,13 @@ import realm from "../databases/allSchemas";
 import { queryAllTodoLists } from "../databases/allSchemas";
 import Swipeout from "react-native-swipeout";
 
+console.disableYellowBox = true;
 class Home extends Component {
   constructor(props) {
     super(props);
     var date = new Date();
     var Month = date.getMonth() + 1;
-    var day = date.getDate()
+    var day = date.getDate();
 
     if (Month == 1) {
       Month2 = "Jan";
@@ -55,7 +56,7 @@ class Home extends Component {
     }
     this.state = {
       todoLists: [],
-      selectedDay : day,
+      selectedDay: day,
       selectedMonth: Month,
       selectedMonth2: Month2,
       selectedMonthDebit: Month,
@@ -82,7 +83,6 @@ class Home extends Component {
       });
 
     console.log(`reloadData`);
-    
   };
 
   setModalVisible(visible) {
@@ -143,41 +143,38 @@ class Home extends Component {
     //Total Dana
     total_dana = total_pendapatan - total_pengeluaran;
 
-     //  Pengeluaran hari ini
-   
- // Pengeluaran Reguler
-   const dataPengeluaranRegulerToday = this.state.todoLists.filter(
-    item =>
-      item.selectedBtnTypeDebit === "reguler" &&
-      item.selectedMonth2Debit === this.state.selectedMonthDebit &&
-      item.creationDateDebit.getDate() === this.state.selectedDay
-  );
- 
-  let total_pengeluaran_regulerToday = 0;
-  dataPengeluaranRegulerToday.map(item => {
-    const nominalPengeluaranRegulerToday = parseInt(item.amountDebit);
-    total_pengeluaran_regulerToday += nominalPengeluaranRegulerToday;
-  });
+    //  Pengeluaran hari ini
 
+    // Pengeluaran Reguler
+    const dataPengeluaranRegulerToday = this.state.todoLists.filter(
+      item =>
+        item.selectedBtnTypeDebit === "reguler" &&
+        item.selectedMonth2Debit === this.state.selectedMonthDebit &&
+        item.creationDateDebit.getDate() === this.state.selectedDay
+    );
 
-// Pengeluaran Lainnya
+    let total_pengeluaran_regulerToday = 0;
+    dataPengeluaranRegulerToday.map(item => {
+      const nominalPengeluaranRegulerToday = parseInt(item.amountDebit);
+      total_pengeluaran_regulerToday += nominalPengeluaranRegulerToday;
+    });
 
-const dataPengeluaranLainnyaToday = this.state.todoLists.filter(
-  item =>
-    item.selectedBtnTypeDebit === "lainnya" &&
-    item.selectedMonth2Debit === this.state.selectedMonthDebit &&
-    item.creationDateDebit.getDate() === this.state.selectedDay
-);
-let total_pengeluaran_lainnyaToday = 0;
-dataPengeluaranLainnyaToday.map(item => {
-  const nominalPengeluaranLainnyaToday = parseInt(item.amountDebit);
-  total_pengeluaran_lainnyaToday += nominalPengeluaranLainnyaToday;
-});
+    // Pengeluaran Lainnya
 
-const total_pengeluaranToday =
-  total_pengeluaran_regulerToday + total_pengeluaran_lainnyaToday;
+    const dataPengeluaranLainnyaToday = this.state.todoLists.filter(
+      item =>
+        item.selectedBtnTypeDebit === "lainnya" &&
+        item.selectedMonth2Debit === this.state.selectedMonthDebit &&
+        item.creationDateDebit.getDate() === this.state.selectedDay
+    );
+    let total_pengeluaran_lainnyaToday = 0;
+    dataPengeluaranLainnyaToday.map(item => {
+      const nominalPengeluaranLainnyaToday = parseInt(item.amountDebit);
+      total_pengeluaran_lainnyaToday += nominalPengeluaranLainnyaToday;
+    });
 
-
+    const total_pengeluaranToday =
+      total_pengeluaran_regulerToday + total_pengeluaran_lainnyaToday;
 
     return (
       // Pendapatan
@@ -226,8 +223,23 @@ const total_pengeluaranToday =
                 Ga
               </Text>
             </View>
+            <View
+              style={{
+                marginBottom: "1%",
+                marginLeft: "2%"
+              }}
+            >
+              <Image
+                style={{
+                  height: 50,
+                  width: 128
+                }}
+                source={require("../asset_app/LogoJenius2.png")}
+                resizeMode="contain"
+              />
+            </View>
 
-            <View style={{ marginTop: "2%", marginLeft: "58%" }}>
+            <View style={{ marginTop: "2%", marginLeft: "21%" }}>
               <Text
                 style={{
                   fontSize: 20,
@@ -520,9 +532,7 @@ const total_pengeluaranToday =
                                 textAlign: "center"
                               }}
                             >
-                              /  {numeral(total_pengeluaranToday).format(
-                            "0,0"
-                          )}
+                              / {numeral(total_pengeluaranToday).format("0,0")}
                             </Text>
                           </View>
                         </Swipeout>
@@ -571,7 +581,12 @@ const total_pengeluaranToday =
               </View>
             </Modal>
 
-            <TouchableOpacity style={{}}>
+            <TouchableOpacity
+              style={{}}
+              onPress={() => {
+                this.props.navigation.navigate("SettingPage");
+              }}
+            >
               <Image
                 style={{
                   height: 76,
